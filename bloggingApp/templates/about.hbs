@@ -1,15 +1,12 @@
-<div class="container">
-	<nav class="navbar navbar-default" role="navigation">
-		<ul class="nav navbar-nav">
-			<li>{{#link-to 'posts'}}Posts{{/link-to}}</li>
-			<li>{{#link-to 'about'}}About{{/link-to}}</li>
-			<li>{{#link-to 'contact'}}Contact{{/link-to}}</li>
-		</ul>
-	</nav>
+<h1>About Page</h1>
 
+<p>Pretul petrolului a atins, dupa sesiunea de vineri, cel mai mic nivel al ultimilor sase ani, informeaza AFP. Aceasta noua scadere a fost influentata de dolar, care se afla in plina apreciere, si de eliminarea temerilor cu privire la tranzitia politica din Arabia Saudita, dupa ce printul mostenitor Salman bin Abdulaziz  a preluat fraiele tarii.</p>
 
+<button class="btn btn-primary" {{action 'showMoreInfo'}}>Want to know more ?</button>
 
-	<h1>About the blog</h1>
-
-	<p>Pretul petrolului a atins, dupa sesiunea de vineri, cel mai mic nivel al ultimilor sase ani, informeaza AFP. Aceasta noua scadere a fost influentata de dolar, care se afla in plina apreciere, si de eliminarea temerilor cu privire la tranzitia politica din Arabia Saudita, dupa ce printul mostenitor Salman bin Abdulaziz  a preluat fraiele tarii.</p>
-</div>
+{{#if isPictureShowing}}
+<button class="btn btn-info" {{action 'hidePicture'}}>Hide the picture</button>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/0/03/Villadetail7.jpg" alt="an example photo"></p>
+{{else}}
+<button class="btn btn-info" {{action 'showPicture'}}>Want to see a picture ?</button>
+{{/if}}
