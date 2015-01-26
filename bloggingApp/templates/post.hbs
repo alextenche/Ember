@@ -22,3 +22,12 @@
 
 {{/if}}
 
+<h2>Comments</h2>
+{{#each comments}}
+	<p>{{text}}</p>
+{{/each}}
+
+<p>{{#link-to 'new-comment' this.id class="btn btn-default"}}New Comment{{/link-to}}</p>
+
+{{outlet}}
+
