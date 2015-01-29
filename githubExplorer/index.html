@@ -3,8 +3,8 @@
 <head>
 	<title>Github Explorer</title>
 	<script type="text/javascript" src="vendor/jquery-1.10.2.js"></script>
-	<script type="text/javascript" src="vendor/ember/handlebars-v2.0.0.js"></script>
-	<script type="text/javascript" src="vendor/ember/ember-1.9.0.js"></script>
+	<script type="text/javascript" src="vendor/ember/handlebars-1.1.2.js"></script>
+	<script type="text/javascript" src="vendor/ember/ember-1.4.0.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	
 </head>
@@ -22,17 +22,118 @@
 		</div>
 	</script>
 
+
 	<script type="text/x-handlebars" data-template-name="index">
-	<p>This is the index page for githubExplorer</p>
+		<p>This is the index page for githubExplorer</p>
+		<ul>
+			{{#each}}
+				<li>{{#link-to 'user' this}}{{name}}{{/link-to}}</a></li>
+			{{/each}}
+		</ul>
+
+		<p><button class="btn btn-success" {{action 'clickMe'}}>Click Me!</button></p>
+
+		<p>{{renderedOn}}</p>
+	</script>
 
 
+	<script type="text/x-handlebars" data-template-name="user">
+		<div class="row">
+			<div class="col-md-3">
+				<div class="well">
+					<p class="text-center">
+						{{#link-to 'user' this}}<img {{bind-attr src=avatar_url}} style="width:140px" />{{/link-to}}
+					</p>
+					<h4>{{#link-to 'user' this}}{{name}}{{/link-to}}</h4>
+					<p>
+						{{company}}<br>
+						{{location}}<br>
+						{{email}}<br>
+					</p>
+					<hr>
+					<table class="table table-striped">
+						<tr><td>Followers:</td><td>{{followers}}</td></tr>
+						<tr><td>Repositories:</td><td>{{public_repos}}</td></tr>
+						<tr><td>Gists:</td><td>{{public_gists}}</td></tr>
+					</table>
+					<p>{{#link-to "index"}}Back{{/link-to}}</p>
+				</div>	
+			</div>
+			<div class="col-md-8">
+				{{outlet}}
+			</div>
+		</div>
+	</script>
+
+
+	<script type="text/x-handlebars" id="user/index">
+		<h2>{{name}}s Github</h2>
+		<hr>
+		<ul>
+			<li>{{#link-to 'repositories' this}}Repositories{{/link-to}}</li>
+			<li><a href="#">News and Events</a></li>
+			<li><a href="#">Gists</a></li>
+		</ul>
 	</script>
 		
 
+	<script type="text/x-handlebars" id="repositories">
+		<table class="table table-striped">
+			{{#each}}
+				<tr><td>{{name}}</td></tr>
+			{{/each}}
+		</table>
+	</script>
+
 
 	<script type="text/javascript">
+	var devs = [
+		{login: "robconery", name: "Rob Conery"},
+		{login: "shanselman", name: "Scott Hanselman"},
+		{login: "tomdale", name: "Tom Dale"},
+		{login: "wycats", name: "Yehuda Katz"},
+		{login: "jongalloway", name: "Jon Galloway"},
+		{login: "haacked", name: "Phil Haack"},
+		{login: "alextenche", name: "Alex Tenche"}
+	];
+
+		
 	window.Github = Ember.Application.create({
 		rootElement: "#github-app"
+	});
+
+
+	Github.Router.map(function(){
+		this.resource("user", {path: "/users/:login"}, function(){
+			this.resource("repositories");
+		});
+	});
+
+
+	Github.IndexRoute = Ember.Route.extend({
+		model: function(){ return devs }
+	});
+
+
+	Github.UserRoute = Ember.Route.extend({
+		model:function(params){
+			return Ember.$.getJSON("https://api.github.com/users/" + params.login ); 
+		}
+	});
+
+
+	Github.UserIndexRoute = Ember.Route.extend({
+		model: function(){
+			return this.modelFor('user');
+		}
+	});
+
+
+	Github.RepositoriesRoute =  Ember.Route.extend({
+		model: function(){
+			var user = this.modelFor("user");
+			return Ember.$.getJSON(user.repos_url);
+		}
 	});
 	</script>
 
