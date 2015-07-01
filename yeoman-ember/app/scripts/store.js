@@ -1,0 +1,1 @@
+YeomanEmber.ApplicationAdapter = DS.FixtureAdapter;
