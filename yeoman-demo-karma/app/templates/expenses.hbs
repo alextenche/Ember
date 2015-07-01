@@ -1,0 +1,14 @@
+<table>
+  <tbody>
+    {{#each}}
+      <tr>
+        <td>{{name}}</td>
+        <td>{{value}}</td>
+      </tr>
+      {{else}}
+        <tr class="no-expenses">
+          <td> There are no expenses. </td>
+        </tr>
+    {{/each}}
+  </tbody>
+</table>
